@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:annotation-config />
+
+	<bean id="databaseUrl" class="java.lang.String">
+		<constructor-arg index="0" value="jdbc:h2:mem:discography" />
+	</bean>
+
+	<bean id="connectionSource" class="com.j256.ormlite.jdbc.JdbcConnectionSource"
+		init-method="initialize">
+		<property name="url" ref="databaseUrl" />
+	</bean>
+
+	<bean id="baseDao" abstract="true" init-method="initialize">
+		<property name="connectionSource" ref="connectionSource" />
+	</bean>
+
+	<bean id="albumDaoORMLite" class="com.j256.ormlite.spring.DaoFactory"
+		factory-method="createDao">
+		<constructor-arg index="0" ref="connectionSource" />
+		<constructor-arg index="1"
+			value="hr.razv.h2.discography.model.Album" />
+	</bean>
+
+</beans>

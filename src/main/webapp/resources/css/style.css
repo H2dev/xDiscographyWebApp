@@ -1,0 +1,204 @@
+/* header { display: } */
+html {
+	font-size: 14px;
+	font-family: "Georgia", Georgia, Serif;
+	color: #3D3D3D;
+}
+
+/* backgroundImage {  */
+/*   background: url(images/bg.jpg) no-repeat center center fixed;  */
+/*   -webkit-background-size: cover; */
+/*   -moz-background-size: cover; */
+/*   -o-background-size: cover; */
+/*   background-size: cover; */
+/* } */
+
+/* body.home { */
+/*     background: url(/Imagenes/tipbusca.png) 10px 400px no-repeat,  url(/Imagenes/tippublica.png) 96% 200px no-repeat; */
+/* } */
+
+body.home {
+  background: url(../pictures/background.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: #7c828f;
+}
+
+td {
+	margin: 10px;
+	padding: 10px;
+}
+
+td.Padding5px {
+	margin: 5x;
+	padding: 5px;
+}
+
+td.noPadding {
+	margin: 0px;
+	padding: 0px;
+}
+
+.inputNumber { 
+	border: 1px solid #e2e2e2; 
+	padding-top: 5px;
+	text-indent: 7px;
+	font-size: 16px;
+	width: 210px;
+	height: 30px;
+	text-align: left;
+	}
+	
+.inputText { 
+	border: 1px solid #e2e2e2; 
+	padding-top: 5px;
+	text-indent: 7px;
+	font-size: 16px;
+	width: 210px;
+	height: 30px;
+	text-align: left;
+	}
+
+.header {
+	display: inline-block;
+	font-size: 22px;
+	font-family: "Arial";
+	border-bottom: 2px solid #474d8d;
+	background: #ffffff;
+	box-shadow: 0 0 25px #f1b943;
+	vertical-align: middle;
+	position: fixed;
+	width: 100%;
+	text-align: center;
+	line-height: 40px;
+	z-index: 2;
+}
+
+.footer {
+	font-size: 11px;
+	font-family: "Arial";
+	padding: 0;
+	background: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+	line-height: normal;
+	border-top: 2px solid #474d8d;
+	box-shadow: 0 0 25px #f1b943;
+	margin: 0;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	line-height: 15px;
+}
+
+.headline {
+	display: inline-block;
+	font-size: 32px;
+	font-family: "Palatino Linotype";
+	font-style: italic;
+	margin-left: 0%;
+	margin-right: 0%;
+	vertical-align: middle;
+	text-align: center;
+	text-shadow: 0px 1px 2px #333;
+	line-height: 40px;
+}
+
+.headline_text {
+	font-size: 32px;
+	font-family: Book Antiqua, Palatino, Palatino Linotype, Palatino LT STD,
+		Georgia, serif;
+	font-style: italic;
+	text-align: center;
+	vertical-align: middle;
+	padding-left: 15px;
+	text-shadow: 0px 1px 2px #333;
+}
+
+.label {
+	font-size: 12px;
+	text-align: right;
+	vertical-align: bottom;
+	color: #c3c3c3;
+	padding-bottom: 11px;
+}
+
+.albumData {
+	vertical-align: bottom;
+	font-size: 16px;
+}
+
+.tag {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.element {
+	font-size: 28px;
+	width: 52px;
+	text-align: center;
+}
+
+.button2 {
+	font-family: "Georgia", Georgia, Serif;
+	border-top: 0px solid #96d1f8;
+	background: #f8f8f8;
+	height: 36px;
+	font-size: 18px;
+	color: #1a0c5a;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.button {
+	font-family: "Georgia", Georgia, Serif;
+	background-color: #f0eef2;
+	border: none;
+	color: #1a0c5a;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.button:hover {
+	background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: -ms-linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	background-image: linear-gradient(bottom, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0.2));
+	cursor: pointer;
+}
+
+.biggerGreyLetters {
+	font-size: 24px;
+	color: #8f8f8f;
+}
+
+.fullscreenDiv {
+	width: 100%;
+	height: auto;
+	bottom: 0px;
+	top: 0px;
+	left: 0;
+	position: absolute;
+}
+
+.center {
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	top: 50%;
+	left: 50%;
+	margin-left: -50px;
+	margin-top: -25px;
+}
+​
