@@ -2,7 +2,8 @@ package hr.razv.h2.discography.service;
 
 import java.util.List;
 
-import hr.razv.h2.discography.model.Album;
+import hr.razv.h2.discography.model.AlbumDTO;
+import hr.razv.h2.discography.model.FilteringCriteria;
 
 public interface AlbumService {
 
@@ -10,22 +11,24 @@ public interface AlbumService {
 
 	public void fillMockData();
 
-	public Album findById(int id);
+	public AlbumDTO findById(int id);
 
-	public List<Album> findByTitle(String title);
+	public List<AlbumDTO> findByTitle(String title);
 
-	public void addAlbum(Album album);
+	public void addAlbum(AlbumDTO albumDto);
 
-	public void updateAlbum(Album album);
+	public void updateAlbum(AlbumDTO albumDto);
 
 	public void deleteAlbumById(int id);
 
-	public List<Album> findAllAlbums(Long page);
-
+	public List<AlbumDTO> findAllAlbums(Long page, FilteringCriteria filteringCriteria);
+	
 	public void deleteAllAlbums();
 
-	public boolean isAlbumExist(Album album);
+	public boolean isAlbumExist(int id);
 	
 	public long tableEntryCount();
+
+	Integer countAlbumsWithFilter(FilteringCriteria filteringCriteria);
 
 }

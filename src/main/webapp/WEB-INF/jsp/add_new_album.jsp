@@ -32,7 +32,6 @@
 		<span style="font-weight: bold; font-style: italic;"><spring:message code="addAlbum" /></span>
 	</div>
 	<br>
-	<br>
 	<form:form method="post"
 		action="${pageContext.servletContext.contextPath}/album"
 		modelAttribute="album" id="addForm" onsubmit="return formValidation()">
@@ -68,7 +67,7 @@
 						</c:otherwise>
 					</c:choose>
 					<td class="albumData" style="margin: 5x; padding: 5px;"><form:input
-							path="tracklistJavaList" id="tracklistEntry" name="tracklist"
+							path="tracklist" id="tracklistEntry" name="tracklist"
 							class="inputText" /></td>
 				</tr>
 			</c:forEach>
@@ -77,7 +76,7 @@
 				<tr id="additionalTrackRow${counter2.index}" style="display: none;">
 					<td class="label"></td>
 					<td class="albumData" style="margin: 5x; padding: 5px;"><form:input
-							path="tracklistJavaList" id="additionalTrack${counter2.index}"
+							path="tracklist" id="additionalTrack${counter2.index}"
 							name="additionalTrack" value=" " class="inputText" /></td>
 				</tr>
 			</c:forEach>
@@ -93,10 +92,9 @@
 	</div>
 	<br>
 	<br>
-	<br>
 	<div style="text-align: center;">
 		<form style="display: inline" method="GET"
-			action="${pageContext.servletContext.contextPath}/album/">
+			action="${pageContext.servletContext.contextPath}/albumsUriBuilder">
 			<input type="submit" class="button"
 				style="width: 80px; height: 48px;" value="${ goBack }" />
 		</form>

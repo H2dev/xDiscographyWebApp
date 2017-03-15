@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import hr.razv.h2.discography.business.BusinessService;
 import hr.razv.h2.discography.dao.AlbumDAO;
 import hr.razv.h2.discography.model.Album;
+import hr.razv.h2.discography.model.AlbumDTO;
+import hr.razv.h2.discography.model.FilteringCriteria;
 
 @Service("albumService")
 @Transactional
@@ -31,31 +33,26 @@ public class AlbumServiceImpl implements AlbumService {
 	}
 	
 	@Override
-	public Album findById(int id) {
+	public AlbumDTO findById(int id) {
 		Album album = albumDao.findById(id);
-		List<String> tracklistJavaList = businessService.parseTracklistString(album.getTracklist());
-		album.setTracklistJavaList(tracklistJavaList);
-		return album;
+		return businessService.convertAlbumtoAlbumDTO(album);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Album> findByTitle(String title) {
-		return albumDao.findByTitle(title);
+	public List<AlbumDTO> findByTitle(String title) {
+		List<Album> albumList = albumDao.findByTitle(title);
+		return businessService.convertAlbumListToAlbumDTOList(albumList);
 	}
 
 	@Override
-	public void addAlbum(Album album) {
-		String tracklistRawString = businessService.parseTracklistJavaList(album.getTracklistJavaList());
-		album.setTracklist(tracklistRawString);
-		albumDao.addAlbum(album);
+	public void addAlbum(AlbumDTO albumDTO) {
+		albumDao.addAlbum(businessService.convertAlbumDTOtoAlbum(albumDTO));
 	}
 
 	@Override
-	public void updateAlbum(Album album) {
-		String tracklistRawString = businessService.parseTracklistJavaList(album.getTracklistJavaList());
-		album.setTracklist(tracklistRawString);
-		albumDao.updateAlbum(album);
+	public void updateAlbum(AlbumDTO albumDTO) {
+		albumDao.updateAlbum(businessService.convertAlbumDTOtoAlbum(albumDTO));
 	}
 
 	@Override
@@ -65,8 +62,9 @@ public class AlbumServiceImpl implements AlbumService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Album> findAllAlbums(Long page) {
-		return albumDao.findAllAlbums(page);
+	public List<AlbumDTO> findAllAlbums(Long page, FilteringCriteria filteringCriteria) {
+		List<Album> albumList = albumDao.findAllAlbums(page, filteringCriteria);
+		return businessService.convertAlbumListToAlbumDTOList(albumList);
 	}
 
 	@Override
@@ -75,13 +73,18 @@ public class AlbumServiceImpl implements AlbumService {
 	}
 
 	@Override
-	public boolean isAlbumExist(Album album) {
-		return albumDao.isAlbumExist(album);
+	public boolean isAlbumExist(int id) {
+		return albumDao.isAlbumExist(id);
 	}
 
 	@Override
 	public long tableEntryCount() {
 		return albumDao.tableEntryCount();
+	}
+	
+	@Override
+	public Integer countAlbumsWithFilter(FilteringCriteria filteringCriteria) {
+		return albumDao.countAlbumsWithFilter(filteringCriteria);
 	}
 	
 }

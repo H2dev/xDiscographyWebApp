@@ -3,6 +3,7 @@ package hr.razv.h2.discography.dao;
 import java.util.List;
 
 import hr.razv.h2.discography.model.Album;
+import hr.razv.h2.discography.model.FilteringCriteria;
 
 public interface AlbumDAO<T> {
 	
@@ -14,7 +15,7 @@ public interface AlbumDAO<T> {
 	
 	public Album findById(int id);
 	
-	public List<Album> findAllAlbums( Long page );
+	public List<Album> findAllAlbums( Long page, FilteringCriteria filteringCriteria );
 	
     public List<Album> findByTitle(String title);
 
@@ -24,8 +25,10 @@ public interface AlbumDAO<T> {
      
     public void deleteAllAlbums();
      
-    public boolean isAlbumExist(Album album);
+    public boolean isAlbumExist(int id);
 
 	public long tableEntryCount();
+
+	public Integer countAlbumsWithFilter(FilteringCriteria filteringCriteria);
     
 }

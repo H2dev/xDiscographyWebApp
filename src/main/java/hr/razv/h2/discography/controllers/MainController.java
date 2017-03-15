@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hr.razv.h2.discography.business.BusinessService;
 import hr.razv.h2.discography.client.RestClient;
-import hr.razv.h2.discography.model.Album;
+import hr.razv.h2.discography.model.AlbumDTO;
+import hr.razv.h2.discography.model.FilteringCriteria;
 import hr.razv.h2.discography.service.AlbumService;
 
 @Controller
@@ -74,30 +76,100 @@ public class MainController {
 
 	// LIST ALBUMS
 	@RequestMapping(value = "/album", method = RequestMethod.GET)
-	public ModelAndView main(HttpServletRequest request,
-			@RequestParam(value = "returningFromView", required = false) String returningFromView,
-			@Param("page") Long page) {
+	public ModelAndView main(HttpServletRequest request, @Param("page") Long page, @Param("orderBy") String orderBy,
+			@Param("sortAsc") String sortAsc, @Param("title") String title, @Param("artist") String artist,
+			@Param("year") Integer year, @Param("track") String track) {
 
 		logger.info("I'm in main controller");
-
-		long fullListSize = albumService.tableEntryCount();
-		int maxNumberOfPages = businessService.getMaxNumberOfPages((int) fullListSize);
-
-		if (returningFromView != null) {
-			if (returningFromView.equals("true")) {
-				page = (Long) request.getSession().getAttribute("currentPage");
-			}
-		} else if (page == null) {
+		
+		if ( page == null ) {
 			page = (long) 1;
 		}
+		
+		if ( orderBy == null || orderBy == "" || orderBy.isEmpty() || sortAsc == null || sortAsc == "" || sortAsc.isEmpty() ) {
+			orderBy = null;
+			sortAsc = null;
+		}
 
-		List<Album> albumList = new ArrayList<Album>();
-		albumList = restClient.listAllAlbums(page);
-
+		FilteringCriteria filteringCriteria = new FilteringCriteria(orderBy, sortAsc, title, artist, year, track);
 		ModelAndView mv = new ModelAndView(MAIN_VIEW);
-		mv.addObject("album_list", albumList);
-		request.getSession().setAttribute("currentPage", page);
+
+		int maxNumberOfPages = businessService
+				.getMaxNumberOfPages(albumService.countAlbumsWithFilter(filteringCriteria));
 		mv.addObject("maxNumberOfPages", maxNumberOfPages);
+		if (page > maxNumberOfPages) {
+			page = (long) maxNumberOfPages;
+		}
+		request.getSession().setAttribute("currentPage", page);
+
+		List<AlbumDTO> albumList = new ArrayList<AlbumDTO>();
+		albumList = restClient.listAllAlbums(page, filteringCriteria);
+
+		mv.addObject("album_list", albumList);
+		mv.addObject("albumDbEntriesCount", albumService.tableEntryCount());
+		mv.addObject("filteringCriteria", filteringCriteria);
+
+		return mv;
+	}
+
+	// URI BUILDER FOR ALBUMS LIST
+	@RequestMapping(value = "/albumsUriBuilder", method = RequestMethod.GET)
+	public ModelAndView albumsUriBuilder(HttpServletRequest request,
+			@ModelAttribute("filteringCriteria") FilteringCriteria filteringCriteria,
+			@RequestParam(value = "page", required = false) Long page) {
+
+		logger.info("I'm in albumsUriBuilder controller");
+
+		if ( page == null ) {
+			page = (Long) request.getSession().getAttribute("currentPage");
+		}
+
+		if ( filteringCriteria.getOrderBy() == null || filteringCriteria.getOrderBy() == "" || filteringCriteria.getOrderBy().isEmpty() || filteringCriteria.getSortAsc() == null || filteringCriteria.getSortAsc() == "" || filteringCriteria.getSortAsc().isEmpty() ) {
+			filteringCriteria.setOrderBy(null);
+			filteringCriteria.setSortAsc(null);
+		}
+		
+		if (businessService.areFilteringCriteriaEmpty(filteringCriteria)) {
+			if (request.getSession().getAttribute("filteringCriteria") != null) {
+				filteringCriteria = (FilteringCriteria) request.getSession().getAttribute("filteringCriteria");
+			}
+		} else {
+			request.getSession().setAttribute("filteringCriteria", filteringCriteria);
+		}
+
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("album");
+
+		if (page != null && page != (long)0)
+			builder.queryParam("page", page);
+
+		if (filteringCriteria.getTitle() != null && filteringCriteria.getTitle() != ""
+				&& !filteringCriteria.getTitle().isEmpty())
+			builder.queryParam("title", filteringCriteria.getTitle());
+
+		if (filteringCriteria.getArtist() != null && filteringCriteria.getArtist() != ""
+				&& !filteringCriteria.getArtist().isEmpty())
+			builder.queryParam("artist", filteringCriteria.getArtist());
+
+		if (filteringCriteria.getTrack() != null && filteringCriteria.getTrack() != ""
+				&& !filteringCriteria.getTrack().isEmpty())
+			builder.queryParam("track", filteringCriteria.getTrack());
+
+		if (filteringCriteria.getYear() != null)
+			builder.queryParam("year", filteringCriteria.getYear());
+
+		if (filteringCriteria.getOrderBy() != null && filteringCriteria.getOrderBy() != ""
+				&& !filteringCriteria.getOrderBy().isEmpty())
+			builder.queryParam("orderBy", filteringCriteria.getOrderBy());
+
+		if (filteringCriteria.getSortAsc() != null && filteringCriteria.getSortAsc() != ""
+				&& !filteringCriteria.getSortAsc().isEmpty())
+			builder.queryParam("sortAsc", filteringCriteria.getSortAsc());
+
+		String uriString = builder.toUriString();
+
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("filteringCriteria", filteringCriteria);
+		mv.setViewName("redirect:/" + uriString);
 
 		return mv;
 	}
@@ -108,7 +180,7 @@ public class MainController {
 
 		logger.info("I'm in addNewAlbum controller");
 
-		Album newAlbum = new Album();
+		AlbumDTO newAlbum = new AlbumDTO();
 		ModelAndView mv = new ModelAndView(ADD_NEW_ALBUM_VIEW);
 		mv.addObject("album", newAlbum);
 
@@ -117,13 +189,13 @@ public class MainController {
 
 	// ALBUM TO ADD
 	@RequestMapping(value = "/album", method = RequestMethod.POST)
-	public ModelAndView albumToAdd(@ModelAttribute("album") Album album) {
+	public ModelAndView albumToAdd(@ModelAttribute("album") AlbumDTO album) {
 
 		logger.info("I'm in albumToAdd controller");
 
 		restClient.createAlbum(album);
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/album/");
+		mv.setViewName("redirect:/albumsUriBuilder");
 
 		return mv;
 	}
@@ -135,9 +207,9 @@ public class MainController {
 		logger.info("I'm in albumView controller");
 
 		ModelAndView mv = new ModelAndView(ALBUM_VIEW);
-		Album album = restClient.getAlbum(id);
+		AlbumDTO album = restClient.getAlbum(id);
 		mv.addObject("album", album);
-		
+
 		return mv;
 	}
 
@@ -149,7 +221,7 @@ public class MainController {
 
 		restClient.deleteAlbum(id);
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("redirect:/album");
+		mv.setViewName("redirect:/albumsUriBuilder");
 
 		return mv;
 	}
@@ -161,7 +233,7 @@ public class MainController {
 		logger.info("I'm in editAlbum controller");
 
 		ModelAndView mv = new ModelAndView(EDIT_ALBUM_VIEW);
-		Album album = restClient.getAlbum(id);
+		AlbumDTO album = restClient.getAlbum(id);
 		mv.addObject("album", album);
 
 		return mv;
@@ -169,7 +241,7 @@ public class MainController {
 
 	// ALBUM TO UPDATE
 	@RequestMapping(value = "/updateAlbum", method = RequestMethod.POST)
-	public ModelAndView updateAlbum(@ModelAttribute("album") Album album) {
+	public ModelAndView updateAlbum(@ModelAttribute("album") AlbumDTO album) {
 
 		logger.info("I'm in updateAlbum controller");
 
@@ -198,7 +270,7 @@ public class MainController {
 	public void jsonDwn(HttpServletResponse response, @PathVariable("id") int id) throws IOException {
 
 		logger.info("I'm in jsonDwn controller");
-		
+
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();
 		try {

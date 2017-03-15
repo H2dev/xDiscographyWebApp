@@ -21,7 +21,6 @@
 <c:set var="edit">
 	<spring:message code="edit" />
 </c:set>
-
 <body>
 	<br>
 	<br>
@@ -29,9 +28,6 @@
 	<br>
 	<br>
 	<br>
-	<br>
-	<br>
-
 	<table style="margin-left: auto; margin-right: auto;">
 		<tr>
 			<td class="label"><spring:message code="form.album.id" /></td>
@@ -52,7 +48,7 @@
 			<td class="albumData" style="font-weight: bold"><c:out
 					value="${album.year}" /></td>
 		</tr>
-		<c:forEach var="track" items="${album.tracklistJavaList}"
+		<c:forEach var="track" items="${album.tracklist}"
 			varStatus="counter">
 			<tr>
 				<c:choose>
@@ -68,11 +64,9 @@
 		</c:forEach>
 	</table>
 	<br>
-	<br>
 	<div style="text-align: center;">
 		<form style="display: inline" method="GET"
-			action="${pageContext.servletContext.contextPath}/album/">
-			<input type="hidden" name="returningFromView" value="true">
+			action="${pageContext.servletContext.contextPath}/albumsUriBuilder">
 			<input type="submit" class="button" style="width: 100px; height: 28px;"
 				value="${ goBack }" />
 		</form>

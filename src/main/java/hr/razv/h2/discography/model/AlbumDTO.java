@@ -1,40 +1,30 @@
 package hr.razv.h2.discography.model;
 
 import java.io.Serializable;
+import java.util.List;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class Album implements Serializable {
+public class AlbumDTO implements Serializable {
 		
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 818428608983402833L;
-
-	public static final String TITLE_FIELD = "title";
-	public static final String YEAR_FIELD = "year";
-	public static final String ARTIST_FIELD = "artist";
-	public static final String TRACKLIST_FIELD = "tracklist";
 	
-	public Album() {
+	public AlbumDTO() {
 	}
 
-	@DatabaseField(generatedId = true)
 	private int id;
 	
-	@DatabaseField(columnName = TITLE_FIELD, canBeNull = false)
 	private String title;
 
-	@DatabaseField(columnName = YEAR_FIELD, canBeNull = true)
 	private Integer year;
 
-	@DatabaseField(columnName = ARTIST_FIELD, canBeNull = true)
 	private String artist;
-
-	@DatabaseField(columnName = TRACKLIST_FIELD, canBeNull = true, width=8000)
-	private String tracklist;
+	
+	private List<String> tracklist;
 
 	public int getId() {
 		return id;
@@ -68,12 +58,16 @@ public class Album implements Serializable {
 		this.artist = artist;
 	}
 
-	public String getTracklist() {
+	public List<String> getTracklist() {
 		return tracklist;
 	}
 
-	public void setTracklist(String tracklist) {
+	public void setTracklist(List<String> tracklist) {
 		this.tracklist = tracklist;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 

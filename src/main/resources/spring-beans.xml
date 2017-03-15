@@ -8,8 +8,23 @@
 	<context:annotation-config />
 
 	<bean id="databaseUrl" class="java.lang.String">
-		<constructor-arg index="0" value="jdbc:h2:mem:discography" />
+		<constructor-arg index="0"
+			value="jdbc:h2:mem:discography;IGNORECASE=TRUE" />
 	</bean>
+
+<!-- 	<jdbc:embedded-database id="dataSource" type="H2"> -->
+<!-- 		<jdbc:script location="classpath:hr/razv/h2/discography/sql/schema.sql"></jdbc:script> -->
+<!-- 		<jdbc:script location="classpath:hr/razv/h2/discography/sql/test-data.sql"></jdbc:script> -->
+<!-- 	</jdbc:embedded-database> -->
+
+<!-- 	<bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" -->
+<!-- 		init-method="start" destroy-method="stop" depends-on="h2WebServer"> -->
+<!-- 		<constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9183" /> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" -->
+<!-- 		init-method="start" destroy-method="stop"> -->
+<!-- 		<constructor-arg value="-web,-webAllowOthers,-webPort,8183"/> -->
+<!-- 	</bean> -->
 
 	<bean id="connectionSource" class="com.j256.ormlite.jdbc.JdbcConnectionSource"
 		init-method="initialize">
