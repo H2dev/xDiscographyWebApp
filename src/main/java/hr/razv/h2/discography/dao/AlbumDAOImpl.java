@@ -22,9 +22,9 @@ import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import hr.razv.h2.discography.business.ConstantsDiscography;
 import hr.razv.h2.discography.model.Album;
 import hr.razv.h2.discography.model.FilteringCriteria;
+import hr.razv.h2.discography.util.Constants;
 
 @Repository("albumDao")
 public class AlbumDAOImpl implements AlbumDAO<Album> {
@@ -97,8 +97,8 @@ public class AlbumDAOImpl implements AlbumDAO<Album> {
 
 				QueryBuilder<Album, Integer> queryBuilder = albumDaoORMLite.queryBuilder();
 
-				queryBuilder.offset((page - (long) 1) * ConstantsDiscography.ITEMS_PER_PAGE)
-						.limit(ConstantsDiscography.ITEMS_PER_PAGE);
+				queryBuilder.offset((page - (long) 1) * Constants.ITEMS_PER_PAGE)
+						.limit(Constants.ITEMS_PER_PAGE);
 
 				buildQueryFromFilteringParams(queryBuilder, filteringCriteria);
 
@@ -197,7 +197,7 @@ public class AlbumDAOImpl implements AlbumDAO<Album> {
 		try {
 			albumDaoORMLite.update(album);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -206,7 +206,7 @@ public class AlbumDAOImpl implements AlbumDAO<Album> {
 		try {
 			albumDaoORMLite.delete(findById(id));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -215,7 +215,7 @@ public class AlbumDAOImpl implements AlbumDAO<Album> {
 		try {
 			albumDaoORMLite.delete(findAllAlbums((long) -1, null));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 	}
 
@@ -226,7 +226,7 @@ public class AlbumDAOImpl implements AlbumDAO<Album> {
 		try {
 			exists = albumDaoORMLite.idExists(id);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return exists;
 	}

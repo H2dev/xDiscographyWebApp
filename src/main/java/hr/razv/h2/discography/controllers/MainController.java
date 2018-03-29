@@ -24,11 +24,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import hr.razv.h2.discography.business.BusinessService;
 import hr.razv.h2.discography.client.RestClient;
 import hr.razv.h2.discography.model.AlbumDTO;
 import hr.razv.h2.discography.model.FilteringCriteria;
 import hr.razv.h2.discography.service.AlbumService;
+import hr.razv.h2.discography.service.BusinessService;
 
 @Controller
 public class MainController {
@@ -52,8 +52,6 @@ public class MainController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcome() {
 
-		logger.info("I'm in welcome controller");
-
 		ModelAndView mv = new ModelAndView(WELCOME_VIEW);
 		albumService.initDB();
 
@@ -63,8 +61,6 @@ public class MainController {
 	// FILL IN WITH MOCK DATA
 	@RequestMapping(value = "/fillInWithMockData", method = RequestMethod.POST)
 	public ModelAndView fillInWithMockData() {
-
-		logger.info("I'm in fillInWithMockData controller");
 
 		albumService.initDB();
 		albumService.fillMockData();
@@ -80,8 +76,6 @@ public class MainController {
 			@Param("sortAsc") String sortAsc, @Param("title") String title, @Param("artist") String artist,
 			@Param("year") Integer year, @Param("track") String track) {
 
-		logger.info("I'm in main controller");
-		
 		if ( page == null ) {
 			page = (long) 1;
 		}
@@ -117,8 +111,6 @@ public class MainController {
 	public ModelAndView albumsUriBuilder(HttpServletRequest request,
 			@ModelAttribute("filteringCriteria") FilteringCriteria filteringCriteria,
 			@RequestParam(value = "page", required = false) Long page) {
-
-		logger.info("I'm in albumsUriBuilder controller");
 
 		if ( page == null ) {
 			page = (Long) request.getSession().getAttribute("currentPage");
@@ -178,8 +170,6 @@ public class MainController {
 	@RequestMapping(value = "/addNewAlbum", method = RequestMethod.GET)
 	public ModelAndView addNewAlbum() {
 
-		logger.info("I'm in addNewAlbum controller");
-
 		AlbumDTO newAlbum = new AlbumDTO();
 		ModelAndView mv = new ModelAndView(ADD_NEW_ALBUM_VIEW);
 		mv.addObject("album", newAlbum);
@@ -190,8 +180,6 @@ public class MainController {
 	// ALBUM TO ADD
 	@RequestMapping(value = "/album", method = RequestMethod.POST)
 	public ModelAndView albumToAdd(@ModelAttribute("album") AlbumDTO album) {
-
-		logger.info("I'm in albumToAdd controller");
 
 		restClient.createAlbum(album);
 		ModelAndView mv = new ModelAndView();
@@ -204,8 +192,6 @@ public class MainController {
 	@RequestMapping(value = "/album/{id}", method = RequestMethod.GET)
 	public ModelAndView albumView(@PathVariable("id") int id) {
 
-		logger.info("I'm in albumView controller");
-
 		ModelAndView mv = new ModelAndView(ALBUM_VIEW);
 		AlbumDTO album = restClient.getAlbum(id);
 		mv.addObject("album", album);
@@ -216,8 +202,6 @@ public class MainController {
 	// DELETE ALBUM
 	@RequestMapping(value = "/albumDelete/{id}", method = RequestMethod.POST)
 	public ModelAndView albumDelete(@PathVariable("id") int id) {
-
-		logger.info("I'm in albumDelete controller");
 
 		restClient.deleteAlbum(id);
 		ModelAndView mv = new ModelAndView();
@@ -230,8 +214,6 @@ public class MainController {
 	@RequestMapping(value = "/editAlbum/{id}", method = RequestMethod.GET)
 	public ModelAndView editAlbum(@PathVariable("id") int id) {
 
-		logger.info("I'm in editAlbum controller");
-
 		ModelAndView mv = new ModelAndView(EDIT_ALBUM_VIEW);
 		AlbumDTO album = restClient.getAlbum(id);
 		mv.addObject("album", album);
@@ -242,8 +224,6 @@ public class MainController {
 	// ALBUM TO UPDATE
 	@RequestMapping(value = "/updateAlbum", method = RequestMethod.POST)
 	public ModelAndView updateAlbum(@ModelAttribute("album") AlbumDTO album) {
-
-		logger.info("I'm in updateAlbum controller");
 
 		restClient.updateAlbum(album.getId(), album);
 		ModelAndView mv = new ModelAndView();
@@ -256,8 +236,6 @@ public class MainController {
 	@RequestMapping(value = "/deleteAllAlbums", method = RequestMethod.POST)
 	public ModelAndView deleteAllAlbums() {
 
-		logger.info("I'm in deleteAllAlbums controller");
-
 		restClient.deleteAllAlbums();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/album");
@@ -268,8 +246,6 @@ public class MainController {
 	// JSON DOWNLOAD
 	@RequestMapping(value = "/albumAsJson/{id}", method = RequestMethod.GET)
 	public void jsonDwn(HttpServletResponse response, @PathVariable("id") int id) throws IOException {
-
-		logger.info("I'm in jsonDwn controller");
 
 		String json = "";
 		ObjectMapper mapper = new ObjectMapper();

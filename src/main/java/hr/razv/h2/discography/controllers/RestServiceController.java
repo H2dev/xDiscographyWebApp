@@ -59,7 +59,7 @@ public class RestServiceController {
 	@RequestMapping(value = "/rest_service/album/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AlbumDTO> restServiceGetAlbum(@PathVariable("id") int id) {
 
-		logger.info("Getting album with id: " + id);
+		logger.info("Getting an album with id: " + id);
 
 		AlbumDTO album = albumService.findById(id);
 		if (album == null) {

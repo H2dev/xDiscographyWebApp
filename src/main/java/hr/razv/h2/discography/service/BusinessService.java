@@ -1,4 +1,4 @@
-package hr.razv.h2.discography.business;
+package hr.razv.h2.discography.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import hr.razv.h2.discography.model.Album;
 import hr.razv.h2.discography.model.AlbumDTO;
 import hr.razv.h2.discography.model.FilteringCriteria;
+import hr.razv.h2.discography.util.Constants;
 
 @Service("businessService")
 public class BusinessService {
@@ -76,8 +77,8 @@ public class BusinessService {
 
 	public int getMaxNumberOfPages(int listSize) {
 
-		int maxNumberOfPages = listSize / (int) ConstantsDiscography.ITEMS_PER_PAGE;
-		if (listSize % ConstantsDiscography.ITEMS_PER_PAGE > 0) {
+		int maxNumberOfPages = listSize / (int) Constants.ITEMS_PER_PAGE;
+		if (listSize % Constants.ITEMS_PER_PAGE > 0) {
 			++maxNumberOfPages;
 		}
 		return maxNumberOfPages;

@@ -8,9 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class AlbumDTO implements Serializable {
 		
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 818428608983402833L;
 	
 	public AlbumDTO() {
