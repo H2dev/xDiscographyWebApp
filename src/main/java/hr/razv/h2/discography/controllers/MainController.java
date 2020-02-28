@@ -53,7 +53,6 @@ public class MainController {
 	public ModelAndView welcome() {
 
 		ModelAndView mv = new ModelAndView(WELCOME_VIEW);
-		albumService.initDB();
 
 		return mv;
 	}
@@ -62,7 +61,6 @@ public class MainController {
 	@RequestMapping(value = "/fillInWithMockData", method = RequestMethod.POST)
 	public ModelAndView fillInWithMockData() {
 
-		albumService.initDB();
 		albumService.fillMockData();
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/album");
